@@ -1,0 +1,2 @@
+# Shiro tags for Freemarker
+
