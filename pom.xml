@@ -18,9 +18,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.net</groupId>
+    <groupId>net.178le</groupId>
     <artifactId>shiro-freemarker-tags</artifactId>
-    <version>1.0.0.RELEASE</version>
+    <version>1.0.0</version>
 	<packaging>jar</packaging>
 	
 	<name>shiro-freemarker-tags</name>
@@ -37,7 +37,7 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://github.com/jujunchen/shiro-freemark-tags/blob/master/LICENSE</url>
         </license>
     </licenses>
 
@@ -49,19 +49,25 @@
         </developer>
     </developers>
 
+    <scm>
+        <connection>scm:git:git@github.com:jujunchen/shiro-freemark-tags.git</connection>
+        <developerConnection>scm:git:git@github.com:jujunchen/shiro-freemark-tags.git</developerConnection>
+        <url>git@github.com:jujunchen/shiro-freemark-tags.git</url>
+    </scm>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <java.version>1.8</java.version>
     </properties>
+
 
     <dependencies>
         <dependency>
             <groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-			<version>1.4.0</version>
+            <artifactId>shiro-all</artifactId>
+            <version>1.4.0</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -73,33 +79,15 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
+
     </dependencies>
 
 
-    <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>src/test/java</directory>
-            </testResource>
-        </testResources>
-    </build>
-	
 	<profiles>
         <profile>
             <id>release</id>
             <build>
                 <plugins>
-                    <!--Compiler-->
-                    <plugin>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>1.8</source>
-                            <target>1.8</target>
-                        </configuration>
-                    </plugin>
                     <!-- Source -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -114,8 +102,60 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
+
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+
         </profile>
     </profiles>
+
 </project>
